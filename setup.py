@@ -1,6 +1,6 @@
 # Automatically created by: shub deploy
-
-from setuptools import find_packages, setup
+from setuptools import find_packages
+from setuptools import setup
 
 setup(
     name="project",
