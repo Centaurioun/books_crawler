@@ -6,6 +6,7 @@
 
 
 class TermsPipeline(object):
+
     @staticmethod
     def process_item(item):
         return item

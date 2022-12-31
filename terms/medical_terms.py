@@ -12,21 +12,23 @@ class MedicalTermsSpider(scrapy.Spider):
     ]
 
     def parse(self, response, **kwargs):
-        for term_url in response.css("div.sres > div.sresl > a ::attr(href)").extract():
-            yield scrapy.Request(
-                response.urljoin(term_url), callback=self.parse_term_page
-            )
+        for term_url in response.css(
+                "div.sres > div.sresl > a ::attr(href)").extract():
+            yield scrapy.Request(response.urljoin(term_url),
+                                 callback=self.parse_term_page)
         next_page = response.css(
-            "div.sres > div.sresn > a ::attr(href)"
-        ).extract_first()
+            "div.sres > div.sresn > a ::attr(href)").extract_first()
         if next_page:
-            yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
+            yield scrapy.Request(response.urljoin(next_page),
+                                 callback=self.parse)
 
     @staticmethod
     def parse_term_page(response):
         item = {
-            "term": response.css("div.sres > div.sresl > a ::text").extract_first(),
-            "definition": response.css("div.sres > div.sresd ::text").extract_first(),
+            "term":
+            response.css("div.sres > div.sresl > a ::text").extract_first(),
+            "definition":
+            response.css("div.sres > div.sresd ::text").extract_first(),
         }
         yield item
 
@@ -35,6 +37,7 @@ var = pipelines.py
 
 
 class TermsPipeline(object):
+
     @staticmethod
     def process_item(item):
         return item
@@ -46,7 +49,6 @@ class TermsPipeline(object):
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-
 
 var = items.py
 
