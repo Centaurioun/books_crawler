@@ -9,10 +9,10 @@ import scrapy
 
 
 class TermsItem(scrapy.Item):
-	# define the fields for your item here like:
-	# name = scrapy.Field()
-	pass
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    pass
 
 
 def py():
-	return None
+    return None

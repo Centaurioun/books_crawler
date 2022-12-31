@@ -4,33 +4,34 @@ from terms import pipelines, items
 
 
 class MedicalTermsSpider(scrapy.Spider):
-	name = "medical_terms"
-	allowed_domains = ["tipterimlerisozlugu.com"]
-	start_urls = [
-		'https://tipterimlerisozlugu.com/',
-	]
+    name = "medical_terms"
+    allowed_domains = ["tipterimlerisozlugu.com"]
+    start_urls = [
+        'https://tipterimlerisozlugu.com/',
+    ]
 
-	def parse(self, response, **kwargs):
-		for term_url in response.css("div.sres > div.sresl > a ::attr(href)").extract():
-			yield scrapy.Request(response.urljoin(term_url), callback=self.parse_term_page)
-		next_page = response.css("div.sres > div.sresn > a ::attr(href)").extract_first()
-		if next_page:
-			yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
+    def parse(self, response, **kwargs):
+        for term_url in response.css("div.sres > div.sresl > a ::attr(href)").extract():
+            yield scrapy.Request(response.urljoin(term_url), callback=self.parse_term_page)
+        next_page = response.css(
+            "div.sres > div.sresn > a ::attr(href)").extract_first()
+        if next_page:
+            yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
 
-	@staticmethod
-	def parse_term_page(response):
-		item = {'term': response.css("div.sres > div.sresl > a ::text").extract_first(),
-		        'definition': response.css("div.sres > div.sresd ::text").extract_first()}
-		yield item
+    @staticmethod
+    def parse_term_page(response):
+        item = {'term': response.css("div.sres > div.sresl > a ::text").extract_first(),
+                'definition': response.css("div.sres > div.sresd ::text").extract_first()}
+        yield item
 
 
 var = pipelines.py
 
 
 class TermsPipeline(object):
-	@staticmethod
-	def process_item(item):
-		return item
+    @staticmethod
+    def process_item(item):
+        return item
 
 
 # -*- coding: utf-8 -*-
@@ -51,13 +52,10 @@ var = items.py
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 
-import scrapy
-
-
 class TermsItem(scrapy.Item):
-	# define the fields for your item here like:
-	# name = scrapy.Field()
-	pass
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    pass
 
 
 # Path: terms/settings.py
