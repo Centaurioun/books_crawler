@@ -1,6 +1,7 @@
 import scrapy
 
-from terms import items, pipelines
+from terms import items
+from terms import pipelines
 
 
 class MedicalTermsSpider(scrapy.Spider):
