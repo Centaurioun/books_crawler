@@ -7,21 +7,26 @@ class MedicalTermsSpider(scrapy.Spider):
     name = "medical_terms"
     allowed_domains = ["tipterimlerisozlugu.com"]
     start_urls = [
-        'https://tipterimlerisozlugu.com/',
+        "https://tipterimlerisozlugu.com/",
     ]
 
     def parse(self, response, **kwargs):
         for term_url in response.css("div.sres > div.sresl > a ::attr(href)").extract():
-            yield scrapy.Request(response.urljoin(term_url), callback=self.parse_term_page)
+            yield scrapy.Request(
+                response.urljoin(term_url), callback=self.parse_term_page
+            )
         next_page = response.css(
-            "div.sres > div.sresn > a ::attr(href)").extract_first()
+            "div.sres > div.sresn > a ::attr(href)"
+        ).extract_first()
         if next_page:
             yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
 
     @staticmethod
     def parse_term_page(response):
-        item = {'term': response.css("div.sres > div.sresl > a ::text").extract_first(),
-                'definition': response.css("div.sres > div.sresd ::text").extract_first()}
+        item = {
+            "term": response.css("div.sres > div.sresl > a ::text").extract_first(),
+            "definition": response.css("div.sres > div.sresd ::text").extract_first(),
+        }
         yield item
 
 
@@ -70,9 +75,9 @@ class TermsItem(scrapy.Item):
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'terms'
+BOT_NAME = "terms"
 
-SPIDER_MODULES = ['terms.spiders']
-NEWSPIDER_MODULE = 'terms.spiders'
+SPIDER_MODULES = ["terms.spiders"]
+NEWSPIDER_MODULE = "terms.spiders"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
